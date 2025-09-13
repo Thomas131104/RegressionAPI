@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MachineLearningAPI
 
 ## Giới thiệu
@@ -149,3 +150,6 @@ MachineLearningAPI/
 **Liên hệ:**
 
 - Tác giả: Mus
+=======
+
+>>>>>>> 3b09053dafc524c7f5ee7098c7c9422651de0b3a
