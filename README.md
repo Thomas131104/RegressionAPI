@@ -125,7 +125,7 @@ MachineLearningAPI/
 
 ### 3. Lịch sử kết quả
 
-- **Endpoint:** `GET /regression/option/history` hoặc `/regression/best-model-without-prediction/history`
+- **Endpoint:** `GET /regression/option/history` hoặc `/regression/best-model/history`
 - **Trả về:** Danh sách các bản ghi lịch sử (giới hạn 100 bản ghi mới nhất).
 
 ---
