@@ -1,0 +1,63 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Môi trường ảo
+venv/
+env/
+ENV/
+.env
+*.env
+*.venv
+
+# File log, debug
+*.log
+
+# Thư mục build, dist
+build/
+dist/
+*.egg-info/
+
+# Jupyter notebook checkpoint
+.ipynb_checkpoints/
+
+# Model tạm hoặc dữ liệu huấn luyện
+*.pkl
+*.joblib
+*.h5
+*.csv
+*.tsv
+*.xlsx
+*.npy
+
+# VSCode config
+.vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# GitHub Copilot hoặc các file AI hỗ trợ
+copilot.*
+
+# Pytest cache
+.pytest_cache/
+.coverage
+
+# mypy cache
+.mypy_cache/
+.dmypy.json
+dmypy.sock
+
+# Caches của pip
+__pypackages__/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Caches của Poetry
+.poetry/
+
+# Caches của pipenv
+.pipenv/
+
