@@ -1,8 +1,8 @@
-# MachineLearningAPI
+# Regression API
 
 ## Giới thiệu
 
-MachineLearningAPI là một RESTful API sử dụng FastAPI cho phép người dùng thực hiện các bài toán hồi quy với nhiều mô hình học máy khác nhau (Linear Regression, Ridge, Lasso, ElasticNet, SVM, Decision Tree, Random Forest, KNN, v.v.). API hỗ trợ đánh giá mô hình, dự đoán giá trị mới, và lưu trữ lịch sử kết quả vào MongoDB.
+Regression API là một RESTful API sử dụng FastAPI cho phép người dùng thực hiện các bài toán hồi quy với nhiều mô hình học máy khác nhau (Linear Regression, Ridge, Lasso, ElasticNet, SVM, Decision Tree, Random Forest, KNN, v.v.). API hỗ trợ đánh giá mô hình, dự đoán giá trị mới, và lưu trữ lịch sử kết quả vào MongoDB.
 
 ---
 
