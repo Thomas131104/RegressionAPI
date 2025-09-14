@@ -4,18 +4,25 @@ from app.utils.panic import Panic
 
 router = APIRouter()
 
+
 @router.get("/history/{type}")
 async def get_history(
-    type : str,
+    type: str,
     limit: int = Query(10, gt=1, lt=100),
     skip: int = Query(0, ge=0),
 ):
     match type.lower():
         case "option":
-            return RedirectResponse(f"/regression/option/history?limit={limit}&skip={skip}", status_code=status.HTTP_302_FOUND)
+            return RedirectResponse(
+                url=f"/regression/option/history?limit={limit}&skip={skip}",
+                status_code=status.HTTP_302_FOUND,
+            )
         case "best_model":
-            return RedirectResponse(f"/regression/best-model/history?limit={limit}&skip={skip}", status_code=status.HTTP_302_FOUND)
+            return RedirectResponse(
+                url=f"/regression/best-model/history?limit={limit}&skip={skip}",
+                status_code=status.HTTP_302_FOUND,
+            )
         case _:
             raise HTTPException(status_code=404, detail="Không tồn tại đường dẫn đó")
-        
+
     return Panic.unreachable()

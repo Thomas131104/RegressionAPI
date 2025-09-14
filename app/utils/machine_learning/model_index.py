@@ -1,6 +1,5 @@
 import numpy as np
-from sklearn.metrics import (mean_absolute_error, r2_score,
-                             root_mean_squared_error)
+from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
 
 
 def status_of_model(

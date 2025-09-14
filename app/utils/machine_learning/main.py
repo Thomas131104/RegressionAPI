@@ -1,7 +1,6 @@
 import numpy as np
 
-from app.utils.machine_learning.data_preprocessing import (prepare_input,
-                                                           splitting_data)
+from app.utils.machine_learning.data_preprocessing import prepare_input, splitting_data
 from app.utils.machine_learning.model_index import predicting_result
 from app.utils.machine_learning.model_training import MODELS
 from app.utils.panic import Panic
