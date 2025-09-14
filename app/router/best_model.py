@@ -8,8 +8,9 @@ from app.database import get_best_model_collection
 from app.schemas import InputBestModel, OutputBestModel
 from app.utils.machine_learning import find_best_model
 from app.utils.panic import Panic
+from app.router.utils import normalize_doc
 
-router = APIRouter(prefix="/best-model-without-prediction")
+router = APIRouter(prefix="/best-model")
 
 
 @router.get("/info")
@@ -76,5 +77,6 @@ async def best_model_history(
     """
 
     cursor = collection.find().sort("time", -1).skip(skip).limit(limit)
-    history = await cursor.to_list(length=limit)
-    return jsonable_encoder(history)
+    raw_docs = await cursor.to_list(length=limit)
+    normalized_docs = [normalize_doc(doc) for doc in raw_docs]
+    return jsonable_encoder(normalized_docs)

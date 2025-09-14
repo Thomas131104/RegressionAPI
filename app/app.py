@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from app.database import connect_to_database, disconnect_to_database
-from app.router import regression_router
+from app.router import regression_router, history_router
 from app.utils.panic import Panic
 
 
@@ -49,6 +49,7 @@ def create_app():
     async def root():
         return {"message": "Chào mừng đến với API của chúng tôi!"}
 
+    app.include_router(history_router)
     app.include_router(regression_router)
 
     return app
