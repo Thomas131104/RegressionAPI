@@ -1,7 +1,5 @@
 from typing import Optional
-
 from pydantic import BaseModel, field_validator
-
 from app.schemas.utils import Matrix, Vector, VectorOrMatrix
 from app.utils.panic import Panic
 
@@ -44,6 +42,16 @@ class InputOptionData(BaseModel):
             return v
 
         raise ValueError("Kiểu dữ liệu không hợp lệ cho ma trận")
+
+    @field_validator("Y_array")
+    @classmethod
+    def check_XY_alignment(cls, y, info):
+        X = info.data.get("X_array")
+        if X is not None and len(X) != len(y):
+            raise ValueError(
+                f"Số hàng của X_array ({len(X)}) phải bằng độ dài của Y_array ({len(y)})"
+            )
+        return y
 
     # Validator chỉ check số cột của x0 vs X_array
     @field_validator("x0")

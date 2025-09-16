@@ -4,44 +4,46 @@ from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorCollection
 
-from app.database import get_best_model_collection
-from app.schemas import InputBestModelData, OutputBestModelData
-from app.utils.machine_learning import run_best_model
+from app.database import get_stack_model_collection
+from app.schemas import InputStackModelData, OutputStackModelData
+from app.utils.machine_learning import run_stack_model
 from app.utils.panic import Panic
 from app.router.utils import normalize_doc
 
-router = APIRouter(prefix="/best-model")
+router = APIRouter(prefix="/stack-model")
 
 
-@router.get("/info")
-def best_model_info():
+@router.get("/")
+def stack_model_get():
     """
-    Thông tin về API tìm mô hình tốt nhất
+    Thông tin về API tùy chọn mô hình con trong Stacking Ensemble Learning
     """
-    return {
-        "message": "Đây là nơi bạn có thể tìm mô hình tốt nhất cho dữ liệu của bạn mà không cần dự đoán"
-    }
+    return {"message": "Đây là nơi bạn có thể tùy chọn mô hình với input tùy ý"}
 
 
-@router.post("/", response_model=OutputBestModelData)
-async def best_model_post(
-    input_data: InputBestModelData,
-    collection: AsyncIOMotorCollection = Depends(get_best_model_collection),
-):
+@router.post("/", response_model=OutputStackModelData)
+async def stack_model_post(
+    input_data: InputStackModelData,
+    collection: AsyncIOMotorCollection = Depends(get_stack_model_collection),
+) -> OutputStackModelData:
     """
-    Tìm mô hình tốt nhất cho dữ liệu đầu vào
+    Chạy mô hình tùy chọn từ dữ liệu và tên mô hình người dùng chỉ định
+
+    Warning:
+    - Feature này chưa tối ưu cho việc dự đoán các giá trị nằm ngoài khoảng đã cho
 
     Param:
-    - input_data: Dữ liệu đầu vào với X_array, Y_array và x0 (tùy chọn)
+    - input_data: Dữ liệu đầu vào với X_array, Y_array, x0 (tùy chọn) và danh sách mô hình
     - collection: Bộ sưu tập MongoDB để lưu kết quả
 
     Return:
-    - Kết quả với mô hình tốt nhất và các chỉ số liên quan
+    - Kết quả với các chỉ số liên quan và dự đoán (nếu có)
     """
-    result = run_best_model(
-        X=input_data.X_array, 
-        Y=input_data.Y_array, 
-        x0=input_data.x0
+
+    result = run_stack_model(
+        X=input_data.X_array,
+        Y=input_data.Y_array,
+        x0=input_data.x0,
     )
 
     result["time"] = datetime.now()
@@ -57,17 +59,17 @@ async def best_model_post(
         ids_to_delete = [doc["_id"] for doc in old_records]
         await collection.delete_many({"_id": {"$in": ids_to_delete}})
 
-    return OutputBestModelData(**result)
+    return OutputStackModelData(**result)
 
 
 @router.get("/history")
 async def best_model_history(
-    limit: int = Query(20, gt=1, lt=100),
+    limit: int = Query(10, gt=1, lt=100),
     skip: int = Query(0, ge=0),
-    collection: AsyncIOMotorCollection = Depends(get_best_model_collection),
+    collection: AsyncIOMotorCollection = Depends(get_stack_model_collection),
 ):
     """
-    Lấy lịch sử các lần tìm mô hình tốt nhất
+    Lấy lịch sử các lần tùy chọn mô hình Stacking Ensemble
 
     Param:
     - limit: Số lượng bản ghi trả về (mặc định 20, tối đa 100)
@@ -77,7 +79,6 @@ async def best_model_history(
     Return:
     - Danh sách các bản ghi lịch sử
     """
-
     cursor = collection.find().sort("time", -1).skip(skip).limit(limit)
     raw_docs = await cursor.to_list(length=limit)
     normalized_docs = [normalize_doc(doc) for doc in raw_docs]

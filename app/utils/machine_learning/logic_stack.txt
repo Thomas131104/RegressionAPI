@@ -1,0 +1,26 @@
+Logic:
+Cho mảng X và x0. So sánh giữa x0 và X
+
+
+* Nếu chỉ 1 feature:
+- Gần Q2: Stacking
+- Gần Q1 / Q3: Voting
+- Xa Q1 / Q3: Elastic
+
+
+* Nếu chỉ có 2 feature:
+- 2 feature gần Q2 --> Stacking
+- 1 feature gần Q2, 1 feature gần Q1 / Q3 --> Stacking
+- 2 feature gần Q1 / Q3 --> Voting
+- 1 feature gần Q2, 1 feature xa Q1 / Q3 --> Voting
+- 1 feature gần Q1 / Q3, 1 feature xa Q1 / Q3 --> Elastic
+- 2 feature xa Q1 / Q3 --> Elastic
+
+
+* Nếu có n feature:
+- ~2n/3 feature gần Q2 --> Stacking
+- ~n/3 feature gần Q2, ~n/3 feature gần Q1 / Q3 --> Stacking
+- ~2n/3 feature gần Q1 / Q3 --> Voting
+- ~n/3 feature gần Q2, ~n/3 feature xa Q1 / Q3 --> Voting
+- ~n/3 feature gần Q1 / Q3, ~n/3 feature xa Q1 / Q3 --> Decision Tree
+- ~2n/3 feature xa Q1 / Q3 --> Elastic

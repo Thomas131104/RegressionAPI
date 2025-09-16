@@ -1,35 +1,16 @@
-from typing import Optional
-
+from typing import Optional, List
 from pydantic import BaseModel, field_validator
 
-from app.schemas.utils import Matrix, Vector, VectorOrMatrix
+from app.schemas.utils import Vector, Matrix, VectorOrMatrix
 from app.utils.panic import Panic
 
 
-class InputBestModelData(BaseModel):
-    """
-    Schema cho input của best_model
-
-    Param:
-    - X_array: Mảng X (bắt buộc)
-    - Y_array: Mảng Y (bắt buộc)
-    - x0: Mảng dự đoán (tùy chọn)
-
-    Note:
-    - X_array và x0 luôn là ma trận 2D
-    - Y_array luôn là vector 1D
-    - Số cột của x0 phải bằng số cột của X_array
-    - Số hàng của Y_array phải bằng số hàng của X_array
-
-    Raises:
-    - ValueError: Nếu dữ liệu không hợp lệ
-    - Panic: Nếu có lỗi không lường trước
-    """
-
+class InputStackModelData(BaseModel):
     X_array: VectorOrMatrix
     Y_array: Vector
-    x0: Optional[VectorOrMatrix] = None
+    x0: Optional[VectorOrMatrix]
 
+    # Chuẩn hóa X_array và x0
     # Validator để đảm bảo X_array và x0 luôn là 2D
     @field_validator("X_array", "x0", mode="before")
     @classmethod
@@ -81,19 +62,35 @@ class InputBestModelData(BaseModel):
         return v
 
 
-class OutputBestModelData(BaseModel):
-    """
-    Schema cho output của best_model
+        Panic().todo()
 
-    Param:
-    - best_model: Tên mô hình tốt nhất
-    - best_score: Chỉ số RMSE trên tập test của mô hình tốt nhất
-    - best_generalization_error: Sai số tổng quát hóa của mô hình tốt nhất
-    - best_result: Kết quả dự đoán từ mô hình tốt nhất (nếu x0 được cung cấp)
+
+class OutputStackModelData(BaseModel):
+    """
+    Dữ liệu đầu ra cho tùy chọn mô hình
+
+    Attributes:
+    - model: Tên mô hình
+    - data_size: Số lượng dòng dữ liệu
+    - data_size_label: Nhãn kích thước dữ liệu
+    - x0: Ma trận dự đoán (2D, tùy chọn)
+    - y0: Vectơ kết quả dự đoán (1D, tùy chọn)
+    - rmse_train: Chỉ số RMSE trên tập train
+    - rmse_test: Chỉ số RMSE trên tập test
+    - mae: Chỉ số MAE trên tập test
+    - r2_train: Chỉ số R^2 trên tập train
+    - r2_test: Chỉ số R^2 trên tập test
+    - r2_status: Trạng thái mô hình
     """
 
-    best_model: str
-    best_r2_score: float
-    best_rmse_score: float
-    best_generalization_error: float
-    best_result: Optional[Vector] = None
+    model: str
+    data_size: int
+    data_size_label: str
+    x0: Optional[VectorOrMatrix] = None
+    y0: Optional[Vector] = None
+    rmse_train: float
+    rmse_test: float
+    mae: float
+    r2_train: float
+    r2_test: float
+    r2_status: str

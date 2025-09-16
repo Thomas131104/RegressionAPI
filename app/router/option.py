@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorCollection
 
-from app.database import get_simple_collection
+from app.database import get_simple_model_collection
 from app.schemas import InputOptionData, OutputOptionData
 from app.utils import run_option_model
 from app.utils.panic import Panic
@@ -24,7 +24,7 @@ def option_get():
 @router.post("/", response_model=OutputOptionData)
 async def option_post(
     input_data: InputOptionData,
-    collection: AsyncIOMotorCollection = Depends(get_simple_collection),
+    collection: AsyncIOMotorCollection = Depends(get_simple_model_collection),
 ) -> OutputOptionData:
     """
     Chạy mô hình tùy chọn từ dữ liệu và tên mô hình người dùng chỉ định
@@ -64,7 +64,7 @@ async def option_post(
 async def best_model_history(
     limit: int = Query(20, gt=1, lt=100),
     skip: int = Query(0, ge=0),
-    collection: AsyncIOMotorCollection = Depends(get_simple_collection),
+    collection: AsyncIOMotorCollection = Depends(get_simple_model_collection),
 ):
     """
     Lấy lịch sử các lần tùy chọn mô hình

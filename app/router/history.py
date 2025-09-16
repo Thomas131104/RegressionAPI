@@ -22,6 +22,11 @@ async def get_history(
                 url=f"/regression/best-model/history?limit={limit}&skip={skip}",
                 status_code=status.HTTP_302_FOUND,
             )
+        case "stacking_model":
+            return RedirectResponse(
+                url=f"/regression/stack-model/history?limit={limit}&skip={skip}",
+                status_code=status.HTTP_302_FOUND,
+            )
         case _:
             raise HTTPException(status_code=404, detail="Không tồn tại đường dẫn đó")
 

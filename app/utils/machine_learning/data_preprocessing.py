@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from app.utils.panic import Panic
@@ -95,3 +96,4 @@ def splitting_data(X: np.ndarray, Y: np.ndarray):
         return train_test_split(X, Y, train_size=0.8)
     else:
         Panic.unreachable("Không nên tới nhánh else trong splitting_data")
+    
